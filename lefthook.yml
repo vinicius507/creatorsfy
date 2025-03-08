@@ -1,0 +1,13 @@
+colors: false
+no_tty: true
+
+pre-commit:
+  commands:
+    lint:
+      glob: "*.{js,ts,cjs,mjs,jsx,tsx,json,jsonc}"
+      run: bun run lint --colors=off --staged
+
+    format:
+      glob: "*.{js,ts,cjs,mjs,jsx,tsx,json,jsonc}"
+      run: bun run format --colors=off --staged
+      stage_fixed: true

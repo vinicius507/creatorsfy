@@ -1,0 +1,7 @@
+{
+  "name": "@creatorsfy/typescript-config",
+  "private": true,
+  "publishConfig": {
+    "access": "public"
+  }
+}

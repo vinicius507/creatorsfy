@@ -1,0 +1,26 @@
+{
+  "name": "creatorsfy",
+  "private": true,
+  "scripts": {
+    "prepare": "lefthook install",
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "biome lint --no-errors-on-unmatched",
+    "lint:fix": "biome lint --fix --no-errors-on-unmatched",
+    "format": "biome format --write --no-errors-on-unmatched",
+    "check-types": "turbo run check-types"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "@types/bun": "^1.2.4",
+    "lefthook": "^1.11.3",
+    "turbo": "^2.4.4",
+    "typescript": "5.8.2"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "bun@1.2.4",
+  "workspaces": ["apps/*", "packages/*"],
+  "trustedDependencies": ["@biomejs/biome", "@nestjs/core", "@swc/core"]
+}
