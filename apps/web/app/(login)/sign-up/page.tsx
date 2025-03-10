@@ -5,7 +5,7 @@ import { Flex } from "antd";
 export default function SignUpPage() {
   return (
     <Flex vertical style={{ maxWidth: 320 }}>
-      <Flex align="center" justify="center" style={{ marginBottom: 32 }}>
+      <Flex align="center" justify="center" style={{ marginBottom: 16 }}>
         <Logo size={32} />
       </Flex>
       <SignUpForm />
