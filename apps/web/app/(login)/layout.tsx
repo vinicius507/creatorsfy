@@ -1,11 +1,11 @@
-import { AntdRegistry } from "@ant-design/nextjs-registry";
+import { Providers } from "@/components/providers";
 import { App } from "antd";
 
 export default function RootLayout({ children }: Readonly<React.PropsWithChildren>) {
   return (
-    <html lang="en">
-      <body style={{ margin: 0 }}>
-        <AntdRegistry>
+    <Providers>
+      <html lang="en">
+        <body style={{ margin: 0 }}>
           <App
             style={{
               display: "flex",
@@ -16,8 +16,8 @@ export default function RootLayout({ children }: Readonly<React.PropsWithChildre
           >
             {children}
           </App>
-        </AntdRegistry>
-      </body>
-    </html>
+        </body>
+      </html>
+    </Providers>
   );
 }

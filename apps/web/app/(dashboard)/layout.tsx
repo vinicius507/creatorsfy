@@ -1,5 +1,6 @@
+import { Providers } from "@/components/providers";
 import { Layout } from "@/components/ui/layout";
-import { AntdRegistry } from "@ant-design/nextjs-registry";
+import { App } from "antd";
 import type { Metadata } from "next";
 import type React from "react";
 
@@ -10,12 +11,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<React.PropsWithChildren>) {
   return (
-    <html lang="en">
-      <body style={{ margin: 0 }}>
-        <AntdRegistry>
-          <Layout>{children}</Layout>
-        </AntdRegistry>
-      </body>
-    </html>
+    <Providers>
+      <html lang="en">
+        <body style={{ margin: 0 }}>
+          <App>
+            <Layout>{children}</Layout>
+          </App>
+        </body>
+      </html>
+    </Providers>
   );
 }
