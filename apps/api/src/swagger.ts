@@ -11,5 +11,7 @@ export function setupSwagger(app: INestApplication) {
   const documentFactory = () => SwaggerModule.createDocument(app, config);
 
   patchNestjsSwagger();
-  SwaggerModule.setup("docs", app, documentFactory);
+  SwaggerModule.setup("docs", app, documentFactory, {
+    jsonDocumentUrl: "docs/openapi.json",
+  });
 }
