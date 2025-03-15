@@ -1,16 +1,25 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { setupListeners } from "@reduxjs/toolkit/query";
+import {
+  useDispatch as useReduxDispatch,
+  useSelector as useReduxSelector,
+  useStore as useReduxStore,
+} from "react-redux";
 import authReducer from "./services/auth";
 import { backendApi } from "./services/backend";
 
-export const store = configureStore({
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(backendApi.middleware),
-  reducer: {
-    auth: authReducer,
-    [backendApi.reducerPath]: backendApi.reducer,
-  },
-});
+export const makeStore = () =>
+  configureStore({
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(backendApi.middleware),
+    reducer: {
+      auth: authReducer,
+      [backendApi.reducerPath]: backendApi.reducer,
+    },
+  });
 
-setupListeners(store.dispatch);
+export type AppStore = ReturnType<typeof makeStore>;
+export type RootState = ReturnType<AppStore["getState"]>;
+export type AppDispatch = AppStore["dispatch"];
 
-export type RootState = ReturnType<typeof store.getState>;
+export const useStore = useReduxStore.withTypes<AppStore>();
+export const useSelector = useReduxSelector.withTypes<RootState>();
+export const useDispatch = useReduxDispatch.withTypes<AppDispatch>();

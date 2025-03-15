@@ -2,10 +2,10 @@
 
 import { setAccessToken } from "@/services/auth";
 import { useAuthControllerLoginMutation } from "@/services/backend/endpoints";
+import { useDispatch } from "@/store";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import { useRouter } from "next/navigation";
-import { useDispatch } from "react-redux";
 import { Form } from "./ui/form";
 import { FormItem } from "./ui/form/form-item";
 import { Input } from "./ui/input";
