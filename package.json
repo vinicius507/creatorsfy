@@ -10,6 +10,9 @@
     "format": "biome format --write --no-errors-on-unmatched",
     "check-types": "turbo run check-types"
   },
+  "dependencies": {
+    "zod": "^3.24.2"
+  },
   "devDependencies": {
     "@biomejs/biome": "1.9.4",
     "@types/bun": "^1.2.4",
