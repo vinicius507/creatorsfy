@@ -1,8 +1,6 @@
 "use client";
 
-import { setAccessToken } from "@/services/auth";
 import { useAuthControllerLoginMutation } from "@/services/backend/endpoints";
-import { useDispatch } from "@/store";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import { useRouter } from "next/navigation";
@@ -17,13 +15,10 @@ type LoginFormFields = {
 
 export const LoginForm: React.FC = () => {
   const router = useRouter();
-  const dispatch = useDispatch();
   const [login, { error }] = useAuthControllerLoginMutation();
 
   const onSubmit = async (values: LoginFormFields) => {
-    const { accessToken } = await login({ credentialsDto: values }).unwrap();
-
-    dispatch(setAccessToken({ token: accessToken }));
+    await login({ credentialsDto: values }).unwrap();
     router.push("/");
   };
 

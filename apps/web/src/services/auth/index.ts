@@ -1,21 +1,16 @@
+import { setAuthCookie } from "@/lib/auth";
 import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
-
-type AuthState = {
-  token: string | null;
-};
+import { backendApi } from "../backend/endpoints";
 
 const slice = createSlice({
   name: "auth",
-  initialState: { token: null } as AuthState,
-  reducers: {
-    setAccessToken: (state, { payload: { token } }: PayloadAction<{ token: string }>) => {
-      state.token = token;
-      return state;
-    },
+  initialState: {},
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addMatcher(backendApi.endpoints.authControllerLogin.matchFulfilled, (_state, { payload }) => {
+      setAuthCookie("auth_token", payload.accessToken);
+    });
   },
 });
-
-export const { setAccessToken } = slice.actions;
 
 export default slice.reducer;
