@@ -2,12 +2,18 @@ import { DRIZZLE_PROVIDER, Database } from "@/db/providers";
 import { usersTable } from "@/db/schema";
 import { Inject, Injectable } from "@nestjs/common";
 
+type CreateUserParams = {
+  storeName: string;
+  email: string;
+  password: string;
+};
+
 @Injectable()
 export class UsersService {
   constructor(@Inject(DRIZZLE_PROVIDER) private readonly db: Database) {}
 
-  async create(email: string, password: string) {
-    return await this.db.insert(usersTable).values({ email, password }).returning();
+  async create(params: CreateUserParams) {
+    return await this.db.insert(usersTable).values(params).returning();
   }
 
   async findByEmail(email: string) {

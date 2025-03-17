@@ -8,6 +8,13 @@
       "when": 1742253690705,
       "tag": "0000_add-users-table",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1742227027401,
+      "tag": "0001_users-adds-store-name-column",
+      "breakpoints": true
     }
   ]
 }

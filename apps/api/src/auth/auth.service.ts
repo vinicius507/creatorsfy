@@ -2,6 +2,12 @@ import { UsersService } from "@/users/users.service";
 import { ConflictException, Injectable, UnauthorizedException } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 
+type RegisterParams = {
+  storeName: string;
+  email: string;
+  password: string;
+};
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -26,14 +32,19 @@ export class AuthService {
     return this.jwt.sign(payload, { subject: user.id ?? "" });
   }
 
-  async register(email: string, password: string) {
-    const existingUser = await this.users.findByEmail(email);
+  async register({ password, ...params }: RegisterParams) {
+    const existingUser = await this.users.findByEmail(params.email);
 
     if (existingUser) {
       throw new ConflictException("Email already in use");
     }
 
     const hashedPassword = await Bun.password.hash(password);
-    return await this.users.create(email, hashedPassword);
+    const createUserParams = {
+      ...params,
+      password: hashedPassword,
+    };
+
+    return await this.users.create(createUserParams);
   }
 }

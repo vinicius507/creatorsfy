@@ -1,0 +1,1 @@
+ALTER TABLE `users` ADD `storeName` text(80) NOT NULL;

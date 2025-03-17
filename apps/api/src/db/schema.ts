@@ -1,14 +1,20 @@
 import { randomUUIDv7 } from "bun";
 import { sqliteTable, text } from "drizzle-orm/sqlite-core";
 
+const id = text()
+  .primaryKey()
+  .$defaultFn(() => randomUUIDv7());
+
+const createdAt = text().$defaultFn(() => new Date().toISOString());
+const updatedAt = text().$onUpdateFn(() => new Date().toISOString());
+
 export const usersTable = sqliteTable("users", {
-  id: text()
-    .primaryKey()
-    .$defaultFn(() => randomUUIDv7()),
+  id,
+  storeName: text({ length: 80 }).notNull(),
   email: text().notNull().unique(),
   password: text().notNull(),
-  createdAt: text().$defaultFn(() => new Date().toISOString()),
-  updatedAt: text().$onUpdateFn(() => new Date().toISOString()),
+  createdAt,
+  updatedAt,
 });
 
 export const schema = { usersTable };

@@ -2,6 +2,7 @@ import { extendApi } from "@anatine/zod-openapi";
 import { z } from "zod";
 
 const schema = z.object({
+  storeName: z.string(),
   email: z.string().email(),
   createdAt: z.string().datetime(),
   updatedAt: z.string().datetime(),
