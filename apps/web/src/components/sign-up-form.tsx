@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuthControllerRegisterMutation } from "@/services/backend/endpoints";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
+import { AppstoreOutlined, LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button } from "antd";
 import { useRouter } from "next/navigation";
 import { Form } from "./ui/form";
@@ -9,6 +9,7 @@ import { FormItem } from "./ui/form/form-item";
 import { Input } from "./ui/input";
 
 type SignUpFormFields = {
+  storeName: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -17,8 +18,9 @@ type SignUpFormFields = {
 export const SignUpForm: React.FC = () => {
   const router = useRouter();
   const [signUp, { error }] = useAuthControllerRegisterMutation();
-  const onSubmit = async ({ email, password }: SignUpFormFields) => {
-    await signUp({ credentialsDto: { email, password } });
+
+  const onSubmit = async ({ confirmPassword: _, ...formData }: SignUpFormFields) => {
+    await signUp({ registerDto: formData }).unwrap();
     router.push("/login");
   };
 
@@ -29,6 +31,9 @@ export const SignUpForm: React.FC = () => {
           Error: {error?.status} {JSON.stringify(error.data)}
         </span>
       )}
+      <FormItem name="storeName" required>
+        <Input icon={<AppstoreOutlined />} placeholder="Store name" required />
+      </FormItem>
       <FormItem name="email" type="email" required>
         <Input type="email" icon={<UserOutlined />} placeholder="Email" required />
       </FormItem>

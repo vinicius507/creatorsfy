@@ -15,7 +15,7 @@ const injectedRtkApi = api.injectEndpoints({
       query: (queryArg) => ({
         url: `/auth/register`,
         method: "POST",
-        body: queryArg.credentialsDto,
+        body: queryArg.registerDto,
       }),
     }),
   }),
@@ -30,9 +30,10 @@ export type AuthControllerLoginApiArg = {
 };
 export type AuthControllerRegisterApiResponse = unknown;
 export type AuthControllerRegisterApiArg = {
-  credentialsDto: CredentialsPayload;
+  registerDto: RegisterRequest;
 };
 export type ReadUser = {
+  storeName: string;
   email: string;
   createdAt: string;
   updatedAt: string;
@@ -44,6 +45,11 @@ export type Tokens = {
 export type CredentialsPayload = {
   email: string;
   password: string;
+};
+export type RegisterRequest = {
+  email: string;
+  password: string;
+  storeName: string;
 };
 export const { useAppControllerGetMeQuery, useAuthControllerLoginMutation, useAuthControllerRegisterMutation } =
   injectedRtkApi;
