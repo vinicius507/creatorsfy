@@ -10,7 +10,7 @@ type Props = React.PropsWithChildren<{
   extraRules?: Rule[];
 }>;
 
-export const FormItem: React.FC<Props> = ({ children, type, ...props }) => {
+export const FormItem: React.FC<Props> = ({ children, type, extraRules, ...props }) => {
   const rules: Rule[] = [{ type, message: "Required." }];
 
   if (props.required) {
@@ -18,7 +18,7 @@ export const FormItem: React.FC<Props> = ({ children, type, ...props }) => {
   }
 
   return (
-    <Form.Item rules={rules} {...props}>
+    <Form.Item rules={[...rules, ...(extraRules ?? [])]} {...props}>
       {children}
     </Form.Item>
   );
