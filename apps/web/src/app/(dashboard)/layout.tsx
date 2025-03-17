@@ -11,14 +11,14 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<React.PropsWithChildren>) {
   return (
-    <Providers>
-      <html lang="en">
-        <body style={{ margin: 0 }}>
+    <html lang="en">
+      <body style={{ margin: 0 }}>
+        <Providers>
           <App>
             <Layout>{children}</Layout>
           </App>
-        </body>
-      </html>
-    </Providers>
+        </Providers>
+      </body>
+    </html>
   );
 }

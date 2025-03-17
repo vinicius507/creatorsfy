@@ -3,9 +3,9 @@ import { App } from "antd";
 
 export default function RootLayout({ children }: Readonly<React.PropsWithChildren>) {
   return (
-    <Providers>
-      <html lang="en">
-        <body style={{ margin: 0 }}>
+    <html lang="en">
+      <body style={{ margin: 0 }}>
+        <Providers>
           <App
             style={{
               display: "flex",
@@ -16,8 +16,8 @@ export default function RootLayout({ children }: Readonly<React.PropsWithChildre
           >
             {children}
           </App>
-        </body>
-      </html>
-    </Providers>
+        </Providers>
+      </body>
+    </html>
   );
 }
