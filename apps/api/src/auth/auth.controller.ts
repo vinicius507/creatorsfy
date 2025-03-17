@@ -1,3 +1,4 @@
+import { ReadUserDto } from "@/users/dtos";
 import { Body, Controller, HttpCode, HttpStatus, Post } from "@nestjs/common";
 import { ApiConflictResponse, ApiCreatedResponse, ApiOkResponse, ApiUnauthorizedResponse } from "@nestjs/swagger";
 import { AuthService } from "./auth.service";
@@ -26,9 +27,9 @@ export class AuthController {
 
   @Public()
   @Post("register")
-  @ApiCreatedResponse({ description: "User registered successfully." })
+  @ApiCreatedResponse({ type: ReadUserDto, description: "User registered successfully." })
   @ApiConflictResponse({ description: "Email already in use." })
   async register(@Body() data: RegisterDto) {
-    await this.auth.register(data);
+    return await this.auth.register(data);
   }
 }
