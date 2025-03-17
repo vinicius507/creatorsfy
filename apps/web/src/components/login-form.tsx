@@ -3,6 +3,7 @@
 import { useAuthControllerLoginMutation } from "@/services/backend/endpoints";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button } from "antd";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Form } from "./ui/form";
 import { FormItem } from "./ui/form/form-item";
@@ -39,6 +40,9 @@ export const LoginForm: React.FC = () => {
         <Button block type="primary" htmlType="submit">
           Login
         </Button>
+        <span style={{ display: "block", marginTop: 6 }}>
+          Don't have an account? <Link href="/sign-up">Sign up</Link>.
+        </span>
       </FormItem>
     </Form>
   );
