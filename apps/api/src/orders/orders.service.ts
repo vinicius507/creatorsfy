@@ -2,9 +2,9 @@ import { DRIZZLE_PROVIDER, type Database } from "@/db/providers";
 import { ordersTable } from "@/db/schema";
 import { Inject, Injectable } from "@nestjs/common";
 import { type SQL, and, gte, lte } from "drizzle-orm";
-import type { FindMayOrdersQuery, Order } from "./schemas";
+import type { FindManyOrdersQuery, Order } from "./schemas";
 
-type FindManyParams = FindMayOrdersQuery;
+type FindManyParams = FindManyOrdersQuery;
 
 @Injectable()
 export class OrdersService {

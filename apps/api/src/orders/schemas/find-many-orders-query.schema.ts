@@ -14,4 +14,4 @@ export const findManyOrdersQuerySchema = extendApi(schema, {
   description: "Query parameters for fetching many orders.",
 });
 
-export type FindMayOrdersQuery = z.infer<typeof findManyOrdersQuerySchema>;
+export type FindManyOrdersQuery = z.infer<typeof findManyOrdersQuerySchema>;
