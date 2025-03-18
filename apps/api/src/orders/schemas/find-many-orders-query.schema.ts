@@ -4,8 +4,8 @@ import { z } from "zod";
 const schema = z.object({
   page: z.coerce.number().int().positive().default(1),
   limit: z.coerce.number().int().positive().max(100).default(30),
-  range: z.coerce.date().array().max(2, {
-    message: "Date range should have at most a start date and an end date.",
+  range: z.coerce.date().array().length(2, {
+    message: "Date range should have a start date and an end date.",
   }),
 });
 
