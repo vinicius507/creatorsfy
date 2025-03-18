@@ -25,7 +25,7 @@ export const SignUpForm: React.FC = () => {
   };
 
   return (
-    <Form name="login" onSubmit={onSubmit}>
+    <Form name="sign-up" onSubmit={onSubmit}>
       {error && (
         <span>
           Error: {error?.status} {JSON.stringify(error.data)}
