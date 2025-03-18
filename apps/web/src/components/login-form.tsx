@@ -19,8 +19,12 @@ export const LoginForm: React.FC = () => {
   const [login, { error }] = useAuthControllerLoginMutation();
 
   const onSubmit = async (values: LoginFormFields) => {
-    await login({ credentialsDto: values }).unwrap();
-    router.push("/");
+    try {
+      await login({ credentialsDto: values }).unwrap();
+      router.push("/");
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (

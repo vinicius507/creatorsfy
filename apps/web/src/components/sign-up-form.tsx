@@ -20,8 +20,12 @@ export const SignUpForm: React.FC = () => {
   const [signUp, { error }] = useAuthControllerRegisterMutation();
 
   const onSubmit = async ({ confirmPassword: _, ...formData }: SignUpFormFields) => {
-    await signUp({ registerDto: formData }).unwrap();
-    router.push("/login");
+    try {
+      await signUp({ registerDto: formData }).unwrap();
+      router.push("/login");
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   return (
