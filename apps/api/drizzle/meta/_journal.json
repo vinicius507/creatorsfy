@@ -29,6 +29,13 @@
       "when": 1742331765878,
       "tag": "0003_change-created-at-to-integer",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1742332890128,
+      "tag": "0004_orders-adds-created-at-index",
+      "breakpoints": true
     }
   ]
 }

@@ -1,6 +1,6 @@
 import { ORDER_STATUSES, SUPPORTED_CURRENCIES } from "@/orders/constants";
 import { randomUUIDv7 } from "bun";
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 const id = text()
   .primaryKey()
@@ -18,13 +18,17 @@ export const usersTable = sqliteTable("users", {
   updatedAt,
 });
 
-export const ordersTable = sqliteTable("orders", {
-  id,
-  status: text({ enum: ORDER_STATUSES }).notNull(),
-  amount: integer().notNull(),
-  currency: text({ enum: SUPPORTED_CURRENCIES }).notNull(),
-  product: text().notNull(),
-  createdAt,
-});
+export const ordersTable = sqliteTable(
+  "orders",
+  {
+    id,
+    status: text({ enum: ORDER_STATUSES }).notNull(),
+    amount: integer().notNull(),
+    currency: text({ enum: SUPPORTED_CURRENCIES }).notNull(),
+    product: text().notNull(),
+    createdAt,
+  },
+  (orders) => [index("created_at_idx").on(orders.createdAt)],
+);
 
 export const schema = { usersTable, ordersTable };
