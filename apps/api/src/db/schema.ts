@@ -6,8 +6,8 @@ const id = text()
   .primaryKey()
   .$defaultFn(() => randomUUIDv7());
 
-const createdAt = text().$defaultFn(() => new Date().toISOString());
-const updatedAt = text().$onUpdateFn(() => new Date().toISOString());
+const createdAt = integer({ mode: "timestamp" }).$defaultFn(() => new Date());
+const updatedAt = integer({ mode: "timestamp" }).$onUpdateFn(() => new Date());
 
 export const usersTable = sqliteTable("users", {
   id,

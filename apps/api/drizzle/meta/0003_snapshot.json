@@ -1,8 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "f607f082-a0a4-4ffb-a1a6-60439471a3ec",
-  "prevId": "d6ba3192-df1b-4a6f-adb3-d299b6d068d0",
+  "id": "2c68158c-e73e-4fb2-abb8-162d8e32a266",
+  "prevId": "f607f082-a0a4-4ffb-a1a6-60439471a3ec",
   "tables": {
     "orders": {
       "name": "orders",
@@ -44,7 +44,7 @@
         },
         "createdAt": {
           "name": "createdAt",
-          "type": "text",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
@@ -89,14 +89,14 @@
         },
         "createdAt": {
           "name": "createdAt",
-          "type": "text",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
         "updatedAt": {
           "name": "updatedAt",
-          "type": "text",
+          "type": "integer",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false

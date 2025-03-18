@@ -6,8 +6,8 @@ import type { Order } from "./schemas";
 
 type FindManyParams = {
   filters?: {
-    startDate?: string;
-    endDate?: string;
+    startDate?: Date;
+    endDate?: Date;
   };
 };
 

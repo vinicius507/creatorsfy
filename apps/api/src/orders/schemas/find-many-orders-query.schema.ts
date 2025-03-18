@@ -4,8 +4,8 @@ import { z } from "zod";
 const schema = z.object({
   filters: z
     .object({
-      startDate: z.string().datetime().optional(),
-      endDate: z.string().datetime().optional(),
+      startDate: z.coerce.date().optional(),
+      endDate: z.coerce.date().optional(),
     })
     .optional(),
 });

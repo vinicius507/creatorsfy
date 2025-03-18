@@ -8,7 +8,7 @@ const schema = z.object({
   amount: z.number().int().nonnegative(),
   currency: z.enum(SUPPORTED_CURRENCIES),
   product: z.string().uuid(),
-  createdAt: z.string().datetime(),
+  createdAt: z.coerce.date(),
 });
 
 export const orderSchema = extendApi(schema, {
