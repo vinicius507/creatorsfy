@@ -1,3 +1,4 @@
+import { Public } from "@/auth/decorators";
 import { OrdersService } from "@/orders/orders.service";
 import { Body, Controller, HttpCode, HttpStatus, Post } from "@nestjs/common";
 import { ApiNoContentResponse } from "@nestjs/swagger";
@@ -7,6 +8,7 @@ import { NewOrderDto } from "./dtos";
 export class WebhooksController {
   constructor(private readonly orders: OrdersService) {}
 
+  @Public()
   @Post("order")
   @HttpCode(HttpStatus.NO_CONTENT)
   @ApiNoContentResponse({
