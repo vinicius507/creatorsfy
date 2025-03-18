@@ -1,15 +1,10 @@
 import { DRIZZLE_PROVIDER, type Database } from "@/db/providers";
 import { ordersTable } from "@/db/schema";
 import { Inject, Injectable } from "@nestjs/common";
-import { SQL } from "drizzle-orm";
-import type { Order } from "./schemas";
+import { type SQL, and, gte, lte } from "drizzle-orm";
+import type { FindMayOrdersQuery, Order } from "./schemas";
 
-type FindManyParams = {
-  filters?: {
-    startDate?: Date;
-    endDate?: Date;
-  };
-};
+type FindManyParams = FindMayOrdersQuery;
 
 @Injectable()
 export class OrdersService {
@@ -19,23 +14,26 @@ export class OrdersService {
     return await this.db.insert(ordersTable).values(newOrder).returning();
   }
 
-  async findMany({ filters }: FindManyParams) {
-    return await this.db.query.ordersTable.findMany({
-      where: (orders, { and, gte, lte }) => {
-        if (!filters || !Object.keys(filters).length) {
-          return;
-        }
+  async findMany({ page, limit, range }: FindManyParams) {
+    const clauses: SQL[] = [];
+    const [startDate, endDate] = range;
 
-        const clauses: SQL[] = [];
+    if (startDate) {
+      clauses.push(gte(ordersTable.createdAt, startDate));
+    }
+    if (endDate) {
+      clauses.push(lte(ordersTable.createdAt, endDate));
+    }
 
-        if (filters.startDate) {
-          clauses.push(gte(orders.createdAt, filters.startDate));
-        }
-        if (filters.endDate) {
-          clauses.push(lte(orders.createdAt, filters.endDate));
-        }
-        return and(...clauses);
-      },
-    });
+    const where = and(...clauses);
+
+    return await Promise.all([
+      this.db.query.ordersTable.findMany({
+        limit,
+        offset: (page - 1) * limit,
+        where: where,
+      }),
+      this.db.$count(ordersTable, where),
+    ]);
   }
 }

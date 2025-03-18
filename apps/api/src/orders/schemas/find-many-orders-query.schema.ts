@@ -2,15 +2,16 @@ import { extendApi } from "@anatine/zod-openapi";
 import { z } from "zod";
 
 const schema = z.object({
-  filters: z
-    .object({
-      startDate: z.coerce.date().optional(),
-      endDate: z.coerce.date().optional(),
-    })
-    .optional(),
+  page: z.coerce.number().int().positive().default(1),
+  limit: z.coerce.number().int().positive().max(100).default(30),
+  range: z.coerce.date().array().max(2, {
+    message: "Date range should have at most a start date and an end date.",
+  }),
 });
 
 export const findManyOrdersQuerySchema = extendApi(schema, {
   title: "Find Many Orders Query",
   description: "Query parameters for fetching many orders.",
 });
+
+export type FindMayOrdersQuery = z.infer<typeof findManyOrdersQuerySchema>;
