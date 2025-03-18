@@ -11,8 +11,9 @@ export const DrizzleProvider: Provider = {
   provide: DRIZZLE_PROVIDER,
   useFactory: (config: ConfigService) => {
     const db = config.get("DATABASE");
+    const isProduction = config.get("NODE_ENV") === "production";
 
-    return drizzle(db, { schema });
+    return drizzle(db, { schema, logger: !isProduction });
   },
   inject: [ConfigService],
 };
