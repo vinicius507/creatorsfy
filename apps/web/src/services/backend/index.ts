@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const backendApi = createApi({
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8000/",
+    baseUrl: "http://localhost:8181/",
     prepareHeaders: async (headers) => {
       const token = await getAuthCookie("auth_token");
 
