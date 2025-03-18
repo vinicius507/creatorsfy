@@ -16,7 +16,7 @@ export class OrdersController {
     description: "Successfully retrieved orders.",
   })
   async findMany(@Res({ passthrough: true }) res: FastifyReply, @Query() params: FindManyOrdersQueryDto) {
-    const [orders, total] = await this.service.findMany(params);
+    const [orders, total] = await this.service.findAllWithinDateRange(params);
     const lastPage = Math.floor(total / params.limit) + 1;
     const nextPage = params.page < lastPage ? params.page + 1 : undefined;
     const prevPage = params.page > 1 ? Math.min(params.page - 1, lastPage) : undefined;

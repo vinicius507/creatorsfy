@@ -14,26 +14,28 @@ export class OrdersService {
     return await this.db.insert(ordersTable).values(newOrder).returning();
   }
 
-  async findMany({ page, limit, range }: FindManyParams) {
-    const clauses: SQL[] = [];
-    const [startDate, endDate] = range;
+  async findAllWithinDateRange({ page, limit, range }: FindManyParams) {
+    return await this.db.transaction(async (tx) => {
+      const clauses: SQL[] = [];
+      const [startDate, endDate] = range;
 
-    if (startDate) {
-      clauses.push(gte(ordersTable.createdAt, startDate));
-    }
-    if (endDate) {
-      clauses.push(lte(ordersTable.createdAt, endDate));
-    }
+      if (startDate) {
+        clauses.push(gte(ordersTable.createdAt, startDate));
+      }
+      if (endDate) {
+        clauses.push(lte(ordersTable.createdAt, endDate));
+      }
 
-    const where = and(...clauses);
+      const where = and(...clauses);
 
-    return await Promise.all([
-      this.db.query.ordersTable.findMany({
-        limit,
-        offset: (page - 1) * limit,
-        where: where,
-      }),
-      this.db.$count(ordersTable, where),
-    ]);
+      return await Promise.all([
+        tx.query.ordersTable.findMany({
+          limit,
+          offset: (page - 1) * limit,
+          where: where,
+        }),
+        tx.$count(ordersTable, where),
+      ]);
+    });
   }
 }
