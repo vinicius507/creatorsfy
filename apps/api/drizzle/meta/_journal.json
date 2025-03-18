@@ -15,6 +15,13 @@
       "when": 1742227027401,
       "tag": "0001_users-adds-store-name-column",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1742316736756,
+      "tag": "0003_add-orders-table",
+      "breakpoints": true
     }
   ]
 }
