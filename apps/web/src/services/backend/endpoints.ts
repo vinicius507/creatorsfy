@@ -52,7 +52,8 @@ export type AuthControllerRegisterApiResponse = /** status 201 User registered s
 export type AuthControllerRegisterApiArg = {
   registerDto: RegisterRequest;
 };
-export type OrdersControllerFindManyApiResponse = /** status 200 Successfully retrieved orders. */ Order[];
+export type OrdersControllerFindManyApiResponse =
+  /** status 200 Successfully retrieved orders. */ PaginatedOrdersResponse;
 export type OrdersControllerFindManyApiArg = {
   page?: number;
   limit?: number;
@@ -81,13 +82,23 @@ export type RegisterRequest = {
   password: string;
   storeName: string;
 };
-export type Order = {
-  id: string;
-  status: "PENDING" | "APPROVED" | "REJECTED";
-  amount: number;
-  currency: "BRL" | "USD" | "EUR";
-  product: string;
-  createdAt: string;
+export type PaginatedOrdersResponse = {
+  data: {
+    id: string;
+    status: "PENDING" | "APPROVED" | "REJECTED";
+    amount: number;
+    currency: "BRL" | "USD" | "EUR";
+    product: string;
+    createdAt: string;
+  }[];
+  meta: {
+    count: number;
+    page: number;
+    pageSize: number;
+    prevPage?: number;
+    nextPage?: number;
+    lastPage: number;
+  };
 };
 export type NewOrder = {
   id: string;
