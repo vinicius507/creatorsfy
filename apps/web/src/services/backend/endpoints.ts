@@ -18,6 +18,26 @@ const injectedRtkApi = api.injectEndpoints({
         body: queryArg.registerDto,
       }),
     }),
+    ordersControllerFindMany: build.query<OrdersControllerFindManyApiResponse, OrdersControllerFindManyApiArg>({
+      query: (queryArg) => ({
+        url: `/orders`,
+        params: {
+          page: queryArg.page,
+          limit: queryArg.limit,
+          range: queryArg.range,
+        },
+      }),
+    }),
+    webhooksControllerNewOrderWebhook: build.mutation<
+      WebhooksControllerNewOrderWebhookApiResponse,
+      WebhooksControllerNewOrderWebhookApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/webhook/order`,
+        method: "POST",
+        body: queryArg.newOrderDto,
+      }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -28,9 +48,19 @@ export type AuthControllerLoginApiResponse = /** status 200 User has successfull
 export type AuthControllerLoginApiArg = {
   credentialsDto: CredentialsPayload;
 };
-export type AuthControllerRegisterApiResponse = unknown;
+export type AuthControllerRegisterApiResponse = /** status 201 User registered successfully. */ ReadUser;
 export type AuthControllerRegisterApiArg = {
   registerDto: RegisterRequest;
+};
+export type OrdersControllerFindManyApiResponse = /** status 200 Successfully retrieved orders. */ Order[];
+export type OrdersControllerFindManyApiArg = {
+  page?: number;
+  limit?: number;
+  range: string[];
+};
+export type WebhooksControllerNewOrderWebhookApiResponse = unknown;
+export type WebhooksControllerNewOrderWebhookApiArg = {
+  newOrderDto: NewOrder;
 };
 export type ReadUser = {
   storeName: string;
@@ -51,5 +81,26 @@ export type RegisterRequest = {
   password: string;
   storeName: string;
 };
-export const { useAppControllerGetMeQuery, useAuthControllerLoginMutation, useAuthControllerRegisterMutation } =
-  injectedRtkApi;
+export type Order = {
+  id: string;
+  status: "PENDING" | "APPROVED" | "REJECTED";
+  amount: number;
+  currency: "BRL" | "USD" | "EUR";
+  product: string;
+  createdAt: string;
+};
+export type NewOrder = {
+  id: string;
+  status: "PENDING" | "APPROVED" | "REJECTED";
+  amount: number;
+  currency: "BRL" | "USD" | "EUR";
+  product: string;
+  createdAt: string;
+};
+export const {
+  useAppControllerGetMeQuery,
+  useAuthControllerLoginMutation,
+  useAuthControllerRegisterMutation,
+  useOrdersControllerFindManyQuery,
+  useWebhooksControllerNewOrderWebhookMutation,
+} = injectedRtkApi;

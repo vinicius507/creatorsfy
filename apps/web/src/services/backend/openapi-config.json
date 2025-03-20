@@ -1,5 +1,5 @@
 {
-  "schemaFile": "http://localhost:8000/docs/openapi.json",
+  "schemaFile": "http://localhost:8181/docs/openapi.json",
   "apiFile": "./index.ts",
   "apiImport": "backendApi",
   "outputFile": "./endpoints.ts",
