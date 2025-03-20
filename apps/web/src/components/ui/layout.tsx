@@ -15,7 +15,6 @@ export const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const { data, isLoading } = useAppControllerGetMeQuery();
-
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -23,7 +22,7 @@ export const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
     <AntLayout>
       <AntLayout>
-        <Header style={{ display: "flex", alignItems: "center" }}>
+        <Header style={{ display: "flex", alignItems: "center", padding: "24px 16px" }}>
           <Button type="text" style={{ color: "white" }} href="/">
             <Logo size={20} />
           </Button>
@@ -54,8 +53,7 @@ export const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
         <Content style={{ margin: "24px 16px 0", overflow: "initial" }}>
           <div
             style={{
-              padding: 24,
-              textAlign: "center",
+              padding: "4px 24px 12px 24px",
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
             }}
