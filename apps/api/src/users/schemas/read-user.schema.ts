@@ -4,8 +4,8 @@ import { z } from "zod";
 const schema = z.object({
   storeName: z.string(),
   email: z.string().email(),
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
+  createdAt: z.coerce.date(),
+  updatedAt: z.coerce.date(),
 });
 
 export const readUserSchema = extendApi(schema, {
