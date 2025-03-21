@@ -4,37 +4,47 @@ import { type PaginatedOrdersResponse, useOrdersControllerFindManyQuery } from "
 import { Table, type TableColumnsType, Typography } from "antd";
 import { useState } from "react";
 
-const columns: TableColumnsType<PaginatedOrdersResponse["data"][number]> = [
-  { title: "Id", dataIndex: "id", key: "id" },
-  { title: "Product", dataIndex: "product", key: "id" },
+type Order = PaginatedOrdersResponse["data"][number];
+
+const columns: TableColumnsType<Order> = [
+  { title: "Order ID", dataIndex: "id", key: "id" },
+  { title: "Product ID", dataIndex: "product", key: "product" },
   {
     title: "Amount",
     dataIndex: "amount",
     key: "amount",
-    render: (value: number, { currency }: PaginatedOrdersResponse["data"][number]) => (
-      <p>
-        {(value / 100).toLocaleString("en", {
+    render: (value: number, { currency }: Order) => (
+      <Typography.Text>
+        {(value / 100).toLocaleString("pt-BR", {
           currency,
           style: "currency",
         })}
-      </p>
+      </Typography.Text>
     ),
   },
   {
     title: "Status",
     dataIndex: "status",
     key: "status",
-    render: (status) => (
-      <Typography.Text type={status === "APPROVED" ? "success" : "danger"} style={{ fontWeight: 600 }}>
-        {status}
-      </Typography.Text>
-    ),
+    render: (status: Order["status"]) => {
+      const typeByStatus = {
+        APPROVED: "success",
+        PENDING: "secondary",
+        REJECTED: "danger",
+      } as const;
+
+      return (
+        <Typography.Text type={typeByStatus[status]} style={{ fontWeight: 600 }}>
+          {status}
+        </Typography.Text>
+      );
+    },
   },
   {
     title: "Created At",
     dataIndex: "createdAt",
     key: "createdAt",
-    render: (date: string) => new Date(date).toLocaleString("pt-BR"),
+    render: (date: string) => <Typography.Text>{new Date(date).toLocaleString("pt-BR")}</Typography.Text>,
   },
 ];
 
@@ -61,6 +71,7 @@ export const OrdersTable: React.FC = () => {
       <Table
         dataSource={data?.data}
         columns={columns}
+        bordered
         pagination={{
           current: page,
           pageSize: limit,
