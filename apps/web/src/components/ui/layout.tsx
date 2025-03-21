@@ -50,10 +50,16 @@ export const Layout: React.FC<React.PropsWithChildren> = ({ children }) => {
             ]}
           />
         </Header>
-        <Content style={{ margin: "24px 16px 0", overflow: "initial" }}>
+        <Content
+          style={{
+            margin: "24px auto 0",
+            maxWidth: 1080,
+            overflow: "initial",
+          }}
+        >
           <div
             style={{
-              padding: "4px 24px 12px 24px",
+              padding: 24,
               background: colorBgContainer,
               borderRadius: borderRadiusLG,
             }}
