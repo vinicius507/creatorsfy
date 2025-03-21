@@ -1,4 +1,5 @@
 import { OrdersTable } from "@/components/orders-table";
+import { Revenue } from "@/components/revenue";
 
 export default function Home() {
   const startDate = "2025-03-10T20:59:37.000Z";
@@ -6,6 +7,7 @@ export default function Home() {
 
   return (
     <div>
+      <Revenue startDate={startDate} endDate={endDate} />
       <OrdersTable startDate={startDate} endDate={endDate} />
     </div>
   );
