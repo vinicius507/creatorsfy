@@ -1,14 +1,18 @@
 "use client";
 
 import { type PaginatedOrdersResponse, useOrdersControllerFindManyQuery } from "@/services/backend/endpoints";
-import { Table, type TableColumnsType, Typography } from "antd";
+import { Table, type TableColumnsType, Tag, Typography } from "antd";
 import { useState } from "react";
 
 type Order = PaginatedOrdersResponse["data"][number];
 
+const idColumn = (value: string) => {
+  return <Typography.Text style={{ fontFamily: "monospace", fontSize: "0.8em" }}>{value}</Typography.Text>;
+};
+
 const columns: TableColumnsType<Order> = [
-  { title: "Order ID", dataIndex: "id", key: "id" },
-  { title: "Product ID", dataIndex: "product", key: "product" },
+  { title: "Order ID", dataIndex: "id", key: "id", render: idColumn },
+  { title: "Product ID", dataIndex: "product", key: "product", render: idColumn },
   {
     title: "Amount",
     dataIndex: "amount",
@@ -29,15 +33,11 @@ const columns: TableColumnsType<Order> = [
     render: (status: Order["status"]) => {
       const typeByStatus = {
         APPROVED: "success",
-        PENDING: "secondary",
-        REJECTED: "danger",
+        PENDING: "default",
+        REJECTED: "error",
       } as const;
 
-      return (
-        <Typography.Text type={typeByStatus[status]} style={{ fontWeight: 600 }}>
-          {status}
-        </Typography.Text>
-      );
+      return <Tag color={typeByStatus[status]}>{status}</Tag>;
     },
   },
   {
@@ -64,10 +64,12 @@ export const OrdersTable: React.FC = () => {
 
   return (
     <div>
-      <Typography.Title level={2} style={{ marginBottom: 8 }}>
-        Orders
-      </Typography.Title>
-      <Typography.Paragraph type="secondary">Registered orders.</Typography.Paragraph>
+      <div style={{ marginBottom: 16 }}>
+        <Typography.Title level={2} style={{ marginBottom: 4 }}>
+          Orders
+        </Typography.Title>
+        <Typography.Paragraph type="secondary">Registered orders.</Typography.Paragraph>
+      </div>
       <Table
         dataSource={data?.data}
         columns={columns}
