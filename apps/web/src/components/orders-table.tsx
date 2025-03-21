@@ -75,10 +75,10 @@ export const OrdersTable: React.FC<Props> = ({ startDate, endDate }) => {
         columns={columns}
         bordered
         pagination={{
-          current: page,
-          pageSize: pageSize,
+          current: data && page,
+          pageSize: data && pageSize,
           total: data?.meta.total,
-          pageSizeOptions: [10, 20, 30, 40, 50, 100, 200],
+          pageSizeOptions: [10, 20, 30, 40, 50, 100],
           onChange: (page, limit) => {
             setPage(page);
             setPageSize(limit);
