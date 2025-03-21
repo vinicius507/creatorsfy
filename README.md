@@ -33,6 +33,22 @@ O projeto está estruturado como um [monorepo]() provendo os seguintes pacotes:
    cp ./apps/app/.env.example ./apps/app/.env
    ```
 4. Execute a aplicação
+
    ```bash
    bun run dev
    ```
+
+5. A aplicação vai estar disponível em http://localhost:3000
+
+## Features
+
+- Login com email e senha
+- Dashboard contruido com rtk-query com paginação e filtro de data
+
+## Possíveis melhorias
+
+- Atualização de orders em tempo real usando SSE/WebSockets + Event Emitter.
+- Trabalhar no design system.
+- Adicionar sistema de notificações
+- Usar OIDC/OAuth para login
+- Adicionar i18n
