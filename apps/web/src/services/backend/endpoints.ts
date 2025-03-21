@@ -29,6 +29,31 @@ const injectedRtkApi = api.injectEndpoints({
         },
       }),
     }),
+    ordersControllerGetHistogram: build.query<
+      OrdersControllerGetHistogramApiResponse,
+      OrdersControllerGetHistogramApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/orders/histogram`,
+        params: {
+          startDate: queryArg.startDate,
+          endDate: queryArg.endDate,
+        },
+      }),
+    }),
+    ordersControllerGetTotalRevenue: build.query<
+      OrdersControllerGetTotalRevenueApiResponse,
+      OrdersControllerGetTotalRevenueApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/orders/revenue`,
+        params: {
+          currency: queryArg.currency,
+          startDate: queryArg.startDate,
+          endDate: queryArg.endDate,
+        },
+      }),
+    }),
     webhooksControllerNewOrderWebhook: build.mutation<
       WebhooksControllerNewOrderWebhookApiResponse,
       WebhooksControllerNewOrderWebhookApiArg
@@ -58,6 +83,19 @@ export type OrdersControllerFindManyApiResponse =
 export type OrdersControllerFindManyApiArg = {
   page?: number;
   size?: number;
+  startDate?: string;
+  endDate?: string;
+};
+export type OrdersControllerGetHistogramApiResponse =
+  /** status 200 Successfully retrieved orders histogram. */ HistogramResponse;
+export type OrdersControllerGetHistogramApiArg = {
+  startDate?: string;
+  endDate?: string;
+};
+export type OrdersControllerGetTotalRevenueApiResponse =
+  /** status 200 Successfully retrieved total revenue. */ TotalRevenueResponse;
+export type OrdersControllerGetTotalRevenueApiArg = {
+  currency: "BRL" | "USD" | "EUR";
   startDate?: string;
   endDate?: string;
 };
@@ -103,6 +141,12 @@ export type PaginatedOrdersResponse = {
     lastPage: number;
   };
 };
+export type HistogramResponse = {
+  histogram: number[];
+};
+export type TotalRevenueResponse = {
+  totalRevenue: number;
+};
 export type NewOrder = {
   id: string;
   status: "PENDING" | "APPROVED" | "REJECTED";
@@ -116,5 +160,7 @@ export const {
   useAuthControllerLoginMutation,
   useAuthControllerRegisterMutation,
   useOrdersControllerFindManyQuery,
+  useOrdersControllerGetHistogramQuery,
+  useOrdersControllerGetTotalRevenueQuery,
   useWebhooksControllerNewOrderWebhookMutation,
 } = injectedRtkApi;
