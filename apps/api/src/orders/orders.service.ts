@@ -1,7 +1,7 @@
 import { DRIZZLE_PROVIDER, type Database } from "@/db/providers";
 import { ordersTable } from "@/db/schema";
 import { Inject, Injectable } from "@nestjs/common";
-import { and, eq, gte, lte, sql } from "drizzle-orm";
+import { and, desc, eq, gte, lte, sql } from "drizzle-orm";
 import { SQLiteSelect } from "drizzle-orm/sqlite-core";
 import type { FindManyOrdersQuery, Order } from "./schemas";
 
@@ -24,6 +24,7 @@ export class OrdersService {
       const selectOrdersPage = tx
         .select()
         .from(ordersTable)
+        .orderBy(desc(ordersTable.createdAt))
         .limit(size)
         .offset((page - 1) * size)
         .$dynamic();
@@ -34,7 +35,7 @@ export class OrdersService {
 
       return await Promise.all([
         this.withDateLimits(selectOrdersPage, startDate, endDate),
-        this.withDateLimits(selectTotalCount, startDate, endDate),
+        this.withDateLimits(selectTotalCount, startDate, endDate).then((result) => result?.pop()?.total ?? 0),
       ]);
     });
   }

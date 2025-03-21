@@ -1,6 +1,6 @@
 import { Controller, Get, Query } from "@nestjs/common";
 import { ApiBearerAuth, ApiOkResponse } from "@nestjs/swagger";
-import { FindManyOrdersQueryDto, PaginatedOrdersResponseDto } from "./dtos";
+import { FindManyOrdersQueryDto, GetTotalRevenueQueryDto, PaginatedOrdersResponseDto, TotalRevenueDto } from "./dtos";
 import { OrdersService } from "./orders.service";
 
 @ApiBearerAuth()
@@ -27,5 +27,16 @@ export class OrdersController {
     };
 
     return { data, meta: paginationMeta };
+  }
+
+  @Get("revenue")
+  @ApiOkResponse({
+    type: TotalRevenueDto,
+    description: "Successfully retrieved total revenue.",
+  })
+  async getTotalRevenue(@Query() params: GetTotalRevenueQueryDto) {
+    const totalRevenue = await this.service.getTotalRevenue(params);
+
+    return { totalRevenue };
   }
 }
