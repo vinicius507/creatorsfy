@@ -23,8 +23,9 @@ const injectedRtkApi = api.injectEndpoints({
         url: `/orders`,
         params: {
           page: queryArg.page,
-          limit: queryArg.limit,
-          range: queryArg.range,
+          size: queryArg.size,
+          startDate: queryArg.startDate,
+          endDate: queryArg.endDate,
         },
       }),
     }),
@@ -56,8 +57,9 @@ export type OrdersControllerFindManyApiResponse =
   /** status 200 Successfully retrieved orders. */ PaginatedOrdersResponse;
 export type OrdersControllerFindManyApiArg = {
   page?: number;
-  limit?: number;
-  range: string[];
+  size?: number;
+  startDate?: string;
+  endDate?: string;
 };
 export type WebhooksControllerNewOrderWebhookApiResponse = unknown;
 export type WebhooksControllerNewOrderWebhookApiArg = {

@@ -3,10 +3,9 @@ import { z } from "zod";
 
 const schema = z.object({
   page: z.coerce.number().int().positive().default(1),
-  limit: z.coerce.number().int().positive().max(100).default(30),
-  range: z.coerce.date().array().length(2, {
-    message: "Date range should have a start date and an end date.",
-  }),
+  size: z.coerce.number().int().positive().max(100).default(30),
+  startDate: z.coerce.date().optional(),
+  endDate: z.coerce.date().optional(),
 });
 
 export const findManyOrdersQuerySchema = extendApi(schema, {

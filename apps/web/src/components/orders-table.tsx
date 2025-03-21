@@ -50,12 +50,12 @@ const columns: TableColumnsType<Order> = [
 
 export const OrdersTable: React.FC = () => {
   const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState(10);
-  const [range, setRange] = useState(["2025-03-10T20:59:37.000Z", "2025-03-20T20:59:37.000Z"]);
+  const [pageSize, setPageSize] = useState(10);
   const { data, error, isLoading } = useOrdersControllerFindManyQuery({
-    limit,
+    size: pageSize,
     page,
-    range,
+    startDate: "2025-03-10T20:59:37.000Z",
+    endDate: "2025-03-20T20:59:37.000Z",
   });
 
   if (error) {
@@ -74,12 +74,12 @@ export const OrdersTable: React.FC = () => {
         bordered
         pagination={{
           current: page,
-          pageSize: limit,
+          pageSize: pageSize,
           total: data?.meta.total,
           pageSizeOptions: [10, 20, 30, 40, 50, 100, 200],
           onChange: (page, limit) => {
             setPage(page);
-            setLimit(limit);
+            setPageSize(limit);
           },
         }}
         rowKey="id"

@@ -14,10 +14,9 @@ export class OrdersService {
     return await this.db.insert(ordersTable).values(newOrder).returning();
   }
 
-  async findAllWithinDateRange({ page, limit, range }: FindManyParams) {
+  async findMany({ page, size, startDate, endDate }: FindManyParams) {
     return await this.db.transaction(async (tx) => {
       const clauses: SQL[] = [];
-      const [startDate, endDate] = range;
 
       if (startDate) {
         clauses.push(gte(ordersTable.createdAt, startDate));
@@ -30,8 +29,8 @@ export class OrdersService {
 
       return await Promise.all([
         tx.query.ordersTable.findMany({
-          limit,
-          offset: (page - 1) * limit,
+          limit: size,
+          offset: (page - 1) * size,
           where: where,
         }),
         tx.$count(ordersTable, where),
