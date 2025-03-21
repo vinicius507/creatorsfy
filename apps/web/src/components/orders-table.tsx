@@ -2,27 +2,30 @@
 
 import { type PaginatedOrdersResponse, useOrdersControllerFindManyQuery } from "@/services/backend/endpoints";
 import { Table, type TableColumnsType, Typography } from "antd";
+import { useState } from "react";
+
+const columns: TableColumnsType<PaginatedOrdersResponse["data"][number]> = [
+  { title: "Id", dataIndex: "id", key: "id" },
+  { title: "Product", dataIndex: "product", key: "id" },
+  { title: "Currency", dataIndex: "currency", key: "currency" },
+  { title: "Amount", dataIndex: "amount", key: "amount" },
+  { title: "Status", dataIndex: "status", key: "status" },
+  { title: "Created At", dataIndex: "createdAt", key: "createdAt" },
+];
 
 export const OrdersTable: React.FC = () => {
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [range, setRange] = useState(["2025-03-10T20:59:37.000Z", "2025-03-20T20:59:37.000Z"]);
   const { data, error, isLoading } = useOrdersControllerFindManyQuery({
-    limit: 10,
-    page: 1,
-    range: [new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), new Date()].map((date) => date.toISOString()),
+    limit,
+    page,
+    range,
   });
-  const columns: TableColumnsType<PaginatedOrdersResponse["data"][number]> = [
-    { title: "Id", dataIndex: "id", key: "id" },
-    { title: "Product", dataIndex: "product", key: "id" },
-    { title: "Currency", dataIndex: "currency", key: "currency" },
-    { title: "Amount", dataIndex: "amount", key: "amount" },
-    { title: "Status", dataIndex: "status", key: "status" },
-    { title: "Created At", dataIndex: "createdAt", key: "createdAt" },
-  ];
 
   if (error) {
     return <p>{JSON.stringify(error)}</p>;
   }
-
-  console.log("isLoading: %s data: %s", isLoading, JSON.stringify(data));
 
   return (
     <div>
@@ -30,7 +33,21 @@ export const OrdersTable: React.FC = () => {
         Orders
       </Typography.Title>
       <Typography.Paragraph type="secondary">Registered orders.</Typography.Paragraph>
-      <Table dataSource={data?.data} columns={columns} loading={isLoading} />
+      <Table
+        dataSource={data?.data}
+        columns={columns}
+        pagination={{
+          current: page,
+          pageSize: limit,
+          total: data?.meta.total,
+          onChange: (page, limit) => {
+            setPage(page);
+            setLimit(limit);
+          },
+        }}
+        rowKey="id"
+        loading={isLoading}
+      />
     </div>
   );
 };
