@@ -49,8 +49,8 @@ const columns: TableColumnsType<Order> = [
 ];
 
 type Props = {
-  startDate: string;
-  endDate: string;
+  startDate?: string;
+  endDate?: string;
 };
 
 export const OrdersTable: React.FC<Props> = ({ startDate, endDate }) => {

@@ -4,8 +4,8 @@ import { useOrdersControllerGetTotalRevenueQuery } from "@/services/backend/endp
 import { Typography } from "antd";
 
 type Props = {
-  startDate: string;
-  endDate: string;
+  startDate?: string;
+  endDate?: string;
 };
 
 export const Revenue: React.FC<Props> = ({ startDate, endDate }) => {

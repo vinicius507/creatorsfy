@@ -1,16 +1,24 @@
+"use client";
+
+import { DatesFilter } from "@/components/dates-filter";
 import { Histogram } from "@/components/histogram";
 import { OrdersTable } from "@/components/orders-table";
 import { Revenue } from "@/components/revenue";
+import { Flex, Typography } from "antd";
+import { useState } from "react";
 
 export default function Home() {
-  const startDate = "2025-03-10T20:59:37.000Z";
-  const endDate = "2025-03-20T20:59:37.000Z";
+  const [dates, setDates] = useState<{ startDate?: string; endDate?: string }>({});
 
   return (
     <div>
-      <Revenue startDate={startDate} endDate={endDate} />
-      <Histogram startDate={startDate} endDate={endDate} />
-      <OrdersTable startDate={startDate} endDate={endDate} />
+      <Flex justify="space-between">
+        <Typography.Title>Dashboard</Typography.Title>
+        <DatesFilter {...dates} setDates={setDates} />
+      </Flex>
+      <Revenue {...dates} />
+      <Histogram {...dates} />
+      <OrdersTable {...dates} />
     </div>
   );
 }
