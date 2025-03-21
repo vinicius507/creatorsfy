@@ -1,3 +1,4 @@
+import { Histogram } from "@/components/histogram";
 import { OrdersTable } from "@/components/orders-table";
 import { Revenue } from "@/components/revenue";
 
@@ -8,6 +9,7 @@ export default function Home() {
   return (
     <div>
       <Revenue startDate={startDate} endDate={endDate} />
+      <Histogram startDate={startDate} endDate={endDate} />
       <OrdersTable startDate={startDate} endDate={endDate} />
     </div>
   );
