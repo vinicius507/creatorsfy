@@ -7,10 +7,35 @@ import { useState } from "react";
 const columns: TableColumnsType<PaginatedOrdersResponse["data"][number]> = [
   { title: "Id", dataIndex: "id", key: "id" },
   { title: "Product", dataIndex: "product", key: "id" },
-  { title: "Currency", dataIndex: "currency", key: "currency" },
-  { title: "Amount", dataIndex: "amount", key: "amount" },
-  { title: "Status", dataIndex: "status", key: "status" },
-  { title: "Created At", dataIndex: "createdAt", key: "createdAt" },
+  {
+    title: "Amount",
+    dataIndex: "amount",
+    key: "amount",
+    render: (value: number, { currency }: PaginatedOrdersResponse["data"][number]) => (
+      <p>
+        {(value / 100).toLocaleString("en", {
+          currency,
+          style: "currency",
+        })}
+      </p>
+    ),
+  },
+  {
+    title: "Status",
+    dataIndex: "status",
+    key: "status",
+    render: (status) => (
+      <Typography.Text type={status === "APPROVED" ? "success" : "danger"} style={{ fontWeight: 600 }}>
+        {status}
+      </Typography.Text>
+    ),
+  },
+  {
+    title: "Created At",
+    dataIndex: "createdAt",
+    key: "createdAt",
+    render: (date: string) => new Date(date).toLocaleString("pt-BR"),
+  },
 ];
 
 export const OrdersTable: React.FC = () => {
@@ -40,6 +65,7 @@ export const OrdersTable: React.FC = () => {
           current: page,
           pageSize: limit,
           total: data?.meta.total,
+          pageSizeOptions: [10, 20, 30, 40, 50, 100, 200],
           onChange: (page, limit) => {
             setPage(page);
             setLimit(limit);
