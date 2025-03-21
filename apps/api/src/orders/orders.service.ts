@@ -1,40 +1,64 @@
 import { DRIZZLE_PROVIDER, type Database } from "@/db/providers";
 import { ordersTable } from "@/db/schema";
 import { Inject, Injectable } from "@nestjs/common";
-import { type SQL, and, gte, lte } from "drizzle-orm";
+import { and, eq, gte, lte, sql } from "drizzle-orm";
+import { SQLiteSelect } from "drizzle-orm/sqlite-core";
 import type { FindManyOrdersQuery, Order } from "./schemas";
 
 type FindManyParams = FindManyOrdersQuery;
+
+type GetTotalRevenueParams = {
+  currency: Order["currency"];
+  startDate?: Date;
+  endDate?: Date;
+};
+
+type RegisterOrderParams = typeof ordersTable.$inferInsert;
 
 @Injectable()
 export class OrdersService {
   constructor(@Inject(DRIZZLE_PROVIDER) private readonly db: Database) {}
 
-  async registerOrder(newOrder: Order) {
-    return await this.db.insert(ordersTable).values(newOrder).returning();
-  }
-
   async findMany({ page, size, startDate, endDate }: FindManyParams) {
     return await this.db.transaction(async (tx) => {
-      const clauses: SQL[] = [];
-
-      if (startDate) {
-        clauses.push(gte(ordersTable.createdAt, startDate));
-      }
-      if (endDate) {
-        clauses.push(lte(ordersTable.createdAt, endDate));
-      }
-
-      const where = and(...clauses);
+      const selectOrdersPage = tx
+        .select()
+        .from(ordersTable)
+        .limit(size)
+        .offset((page - 1) * size)
+        .$dynamic();
+      const selectTotalCount = this.db
+        .select({ total: sql<number>`cast(count(${ordersTable.id}) as int)` })
+        .from(ordersTable)
+        .$dynamic();
 
       return await Promise.all([
-        tx.query.ordersTable.findMany({
-          limit: size,
-          offset: (page - 1) * size,
-          where: where,
-        }),
-        tx.$count(ordersTable, where),
+        this.withDateLimits(selectOrdersPage, startDate, endDate),
+        this.withDateLimits(selectTotalCount, startDate, endDate),
       ]);
     });
+  }
+
+  async getTotalRevenue({ currency, startDate, endDate }: GetTotalRevenueParams) {
+    const selectTotalRevenue = this.db
+      .select({ totalRevenue: sql<number>`sum(${ordersTable.amount})` })
+      .from(ordersTable)
+      .where(eq(ordersTable.currency, currency))
+      .$dynamic();
+
+    const result = await this.withDateLimits(selectTotalRevenue, startDate, endDate);
+    const { totalRevenue } = result.pop() ?? {};
+
+    return totalRevenue ?? 0;
+  }
+
+  async registerOrder(order: RegisterOrderParams) {
+    return await this.db.insert(ordersTable).values(order).returning();
+  }
+
+  private withDateLimits<T extends SQLiteSelect>(qb: T, startDate?: Date, endDate?: Date) {
+    return qb.where(
+      and(startDate && gte(ordersTable.createdAt, startDate), endDate && lte(ordersTable.createdAt, endDate)),
+    );
   }
 }
