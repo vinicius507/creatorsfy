@@ -3,15 +3,13 @@ import { ordersTable } from "@/db/schema";
 import { Inject, Injectable } from "@nestjs/common";
 import { and, desc, eq, gte, lte, sql } from "drizzle-orm";
 import { SQLiteSelect } from "drizzle-orm/sqlite-core";
-import type { FindManyOrdersQuery, Order } from "./schemas";
+import type { FindManyOrdersQuery, GetHistogramQuery, GetTotalRevenueQuery } from "./schemas";
 
 type FindManyParams = FindManyOrdersQuery;
 
-type GetTotalRevenueParams = {
-  currency: Order["currency"];
-  startDate?: Date;
-  endDate?: Date;
-};
+type GetHistogramParams = GetHistogramQuery;
+
+type GetTotalRevenueParams = GetTotalRevenueQuery;
 
 type RegisterOrderParams = typeof ordersTable.$inferInsert;
 
@@ -38,6 +36,23 @@ export class OrdersService {
         this.withDateLimits(selectTotalCount, startDate, endDate).then((result) => result?.pop()?.total ?? 0),
       ]);
     });
+  }
+
+  async getHistogram({ startDate, endDate }: GetHistogramParams) {
+    const selectOrders = this.db.select().from(ordersTable).$dynamic();
+    const orders = await this.withDateLimits(selectOrders, startDate, endDate);
+
+    return orders.reduce(
+      (acc, { createdAt }) => {
+        const hour = createdAt?.getHours();
+
+        if (hour !== undefined && acc[hour] !== undefined) {
+          acc[hour] = acc[hour] + 1;
+        }
+        return acc;
+      },
+      Array.from({ length: 24 }, () => 0),
+    );
   }
 
   async getTotalRevenue({ currency, startDate, endDate }: GetTotalRevenueParams) {

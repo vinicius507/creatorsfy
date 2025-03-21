@@ -1,6 +1,13 @@
 import { Controller, Get, Query } from "@nestjs/common";
 import { ApiBearerAuth, ApiOkResponse } from "@nestjs/swagger";
-import { FindManyOrdersQueryDto, GetTotalRevenueQueryDto, PaginatedOrdersResponseDto, TotalRevenueDto } from "./dtos";
+import {
+  FindManyOrdersQueryDto,
+  GetHistogramQueryDto,
+  GetTotalRevenueQueryDto,
+  PaginatedOrdersResponseDto,
+  ReadHistogramDto,
+  TotalRevenueDto,
+} from "./dtos";
 import { OrdersService } from "./orders.service";
 
 @ApiBearerAuth()
@@ -27,6 +34,17 @@ export class OrdersController {
     };
 
     return { data, meta: paginationMeta };
+  }
+
+  @Get("histogram")
+  @ApiOkResponse({
+    type: ReadHistogramDto,
+    description: "Successfully retrieved orders histogram.",
+  })
+  async getHistogram(@Query() params: GetHistogramQueryDto) {
+    const histogram = await this.service.getHistogram(params);
+
+    return { histogram };
   }
 
   @Get("revenue")
