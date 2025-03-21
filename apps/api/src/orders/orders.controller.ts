@@ -18,6 +18,7 @@ export class OrdersController {
     const lastPage = Math.floor(total / params.limit) + 1;
     const paginationMeta = {
       count: data.length,
+      total,
       page: params.page,
       pageSize: params.limit,
       prevPage: params.page > 1 ? Math.min(params.page - 1, lastPage) : undefined,

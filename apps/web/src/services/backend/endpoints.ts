@@ -93,6 +93,7 @@ export type PaginatedOrdersResponse = {
   }[];
   meta: {
     count: number;
+    total: number;
     page: number;
     pageSize: number;
     prevPage?: number;
