@@ -48,14 +48,19 @@ const columns: TableColumnsType<Order> = [
   },
 ];
 
-export const OrdersTable: React.FC = () => {
+type Props = {
+  startDate: string;
+  endDate: string;
+};
+
+export const OrdersTable: React.FC<Props> = ({ startDate, endDate }) => {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const { data, error, isLoading } = useOrdersControllerFindManyQuery({
     size: pageSize,
     page,
-    startDate: "2025-03-10T20:59:37.000Z",
-    endDate: "2025-03-20T20:59:37.000Z",
+    startDate,
+    endDate,
   });
 
   if (error) {
@@ -64,12 +69,7 @@ export const OrdersTable: React.FC = () => {
 
   return (
     <div>
-      <div style={{ marginBottom: 16 }}>
-        <Typography.Title level={2} style={{ marginBottom: 4 }}>
-          Orders
-        </Typography.Title>
-        <Typography.Paragraph type="secondary">Registered orders.</Typography.Paragraph>
-      </div>
+      <Typography.Title level={2}>Orders</Typography.Title>
       <Table
         dataSource={data?.data}
         columns={columns}
